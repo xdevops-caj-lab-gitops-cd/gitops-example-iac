@@ -36,3 +36,11 @@ oc apply -f apps/todolist-git
 ```bash
 oc apply -f apps/todolist-multi-sources-dev
 ```
+
+## App of Apps
+
+Deply an ArgoCD application contains a few child apps.
+
+```bash
+oc apply -f app-of-apps/application.yaml
+```

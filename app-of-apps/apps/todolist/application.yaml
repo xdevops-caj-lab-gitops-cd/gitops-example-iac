@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-todolist
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: my-todolist
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: todolist # helm chart name
+    helm:
+      valueFiles:
+      - values.yaml
+      parameters:
+      - name: replicas
+        value: '2'
+    repoURL: https://rht-labs.com/todolist/ # Helm chart repo
+    targetRevision: 1.1.0 # Helm chart version
+  syncPolicy:
+    automated: {}

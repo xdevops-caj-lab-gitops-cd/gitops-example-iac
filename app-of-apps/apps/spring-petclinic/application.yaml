@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-spring-petclinic
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: my-spring-petclinic
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: spring-petclinic
+    repoURL: https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-apps.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
