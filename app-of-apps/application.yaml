@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps
+    path: app-of-apps/apps
     repoURL: https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-iac.git
     targetRevision: HEAD
     directory:
