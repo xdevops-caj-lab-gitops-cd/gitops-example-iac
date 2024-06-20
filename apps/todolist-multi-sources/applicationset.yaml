@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-todolist
+  namespace: openshift-gitops
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: in-cluster
+            url: https://kubernetes.default.svc
+            namespace: todolist-dev
+            valueFile: 'values-dev.yaml'
+            name: app-todolist-dev
+          - cluster: in-cluster
+            url: https://kubernetes.default.svc
+            namespace: todolist-sit
+            valueFile: 'values-sit.yaml'
+            name: app-todolist-sit
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      destination:
+        namespace: '{{namespace}}'
+        server: '{{url}}'
+      project: appproj-todolist
+      sources:
+      - repoURL: 'https://rht-labs.com/todolist/' # Source of Helm chart: Helm chart repository
+        chart: todolist # Helm chart name
+        targetRevision: 1.1.0 # Helm chart version
+        helm:
+          valueFiles:
+          - $values/todolist/values/{{valueFile}} # values.yaml in a sperate Helm values Git repository
+      - repoURL: 'https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-apps.git' # Source of Helm values Git repository
+        targetRevision: HEAD
+        ref: values
+      syncPolicy:
+        automated: {}
