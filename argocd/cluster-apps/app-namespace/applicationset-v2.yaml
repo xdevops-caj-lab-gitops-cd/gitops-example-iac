@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: appset-namespace
-  namespace: argocd
+  name: appset-namespace-v2
+  namespace: openshift-gitops
 spec:
   generators:
   - git:
       repoURL: https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-iac
       revision: HEAD
       directories:
-      - path: cluster-config/namespaces/*
+      - path: cluster-config/namespaces-v2/*
   template:
     metadata:
       name: '{{path.basename}}'

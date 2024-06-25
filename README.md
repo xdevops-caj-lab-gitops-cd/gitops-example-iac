@@ -1,5 +1,13 @@
 # GitOps Example IaC repository
 
+## Grant permissions
+
+Add a group `cluster-admins`, and add a user `admin` into this group:
+
+```bash
+oc adm groups new cluster-admins
+oc adm groups add-users cluster-admins admin
+```
 
 ## ArgoCD Application
 
@@ -53,8 +61,21 @@ Create a namespace to install a new ArgoCD instance:
 oc new-project argocd
 ```
 
-Create a new ArgoCD instnace on OpenShift GitOps operator under `argocd` project.
+Create a new ArgoCD instance named `argocd` on OpenShift GitOps operator under `argocd` project.
 
+Notes:
+- Can't create route of arogcd server automatically on OpenShift local
+- Need manual check applicaitonset/enabled (it is a bug?) to create applicationset controller
 
-References:
-- <https://github.com/redhat-developer/gitops-operator/blob/master/docs/OpenShift%20GitOps%20Usage%20Guide.md#setting-up-a-new-argo-cd-instance>
+Create applicationset for namespace applications:
+
+```bash
+oc apply -f argocd/cluster-apps/app-namespace/applicationset.yaml
+```
+
+The `appset-namespace` ApplicationSet generates two applicaitons: `namespace-1` and `namespace-2`.
+
+But due to the argocd instance is not a cluster-scoped instance, so it can't create namespaces.
+
+Expected errors: `Failed to load live state: Cluster level Namespace "namespace-1" can not be managed when in namespaced mode`.
+
