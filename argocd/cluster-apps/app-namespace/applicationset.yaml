@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: appset-bgd
+  namespace: openshift-gitops
+spec:
+  generators:
+    - git:
+      repoURL: https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-iac.git
+      revision: HEAD
+      directories:
+      - path: cluster-config/namespaces/*
+  template:
+    metadata:
+      name: '{{.path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/xdevops-caj-lab-gitops-cd/gitops-example-iac.git
+        targetRevision: HEAD
+        path: '{{.path.path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.path.basename}}'
+      syncPolicy:
+        automated: {}

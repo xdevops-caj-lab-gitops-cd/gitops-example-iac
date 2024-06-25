@@ -44,3 +44,13 @@ Deply an ArgoCD application contains a few child apps.
 ```bash
 oc apply -f app-of-apps/application.yaml
 ```
+
+
+## Custom ArgoCD instance
+
+Create a namespace to install a new ArgoCD instance:
+```bash
+oc new-project argocd
+```
+
+Create a new ArgoCD instnace on OpenShift GitOps operator under `argocd` project.
