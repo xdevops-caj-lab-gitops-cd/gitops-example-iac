@@ -79,3 +79,23 @@ But due to the argocd instance is not a cluster-scoped instance, so it can't cre
 
 Expected errors: `Failed to load live state: Cluster level Namespace "namespace-1" can not be managed when in namespaced mode`.
 
+If use default `openshift-gitops` argocd instance, it can create namespaces normally.
+
+```bash
+oc apply -f argocd/cluster-apps/app-namespace/applicationset-v2.yaml
+```
+
+If `argocd` argocd instance wants to deloy applicationt to the namespaces managed by `openshift-gitops` argocd instance, need add label `argocd.argoproj.io/managed-by`.
+
+Example:
+```bash
+oc label namespace namespace-v2-1 argocd.argoproj.io/managed-by=argocd --overwrite=true
+```
+
+Otherwise has the error: `Failed to load live state: Namespace "namespace-v2-1" for Deployment "spring-petclinic" is not managed`.
+
+References:
+- <https://github.com/argoproj-labs/argocd-operator/issues/665>
+- <https://developers.redhat.com/articles/2021/08/03/managing-gitops-control-planes-secure-gitops-practices>
+- <https://docs.openshift.com/gitops/1.12/declarative_clusterconfig/configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations.html#using-argo-cd-instance-to-manage-cluster-scoped-resources_configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations>
+
