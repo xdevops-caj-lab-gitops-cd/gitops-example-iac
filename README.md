@@ -54,3 +54,7 @@ oc new-project argocd
 ```
 
 Create a new ArgoCD instnace on OpenShift GitOps operator under `argocd` project.
+
+
+References:
+- <https://github.com/redhat-developer/gitops-operator/blob/master/docs/OpenShift%20GitOps%20Usage%20Guide.md#setting-up-a-new-argo-cd-instance>

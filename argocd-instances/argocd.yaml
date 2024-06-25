@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  host: argocd-server-argocd.apps-crc.testing
+  to:
+    kind: Service
+    name: argocd-server
+    weight: 100
+  port:
+    targetPort: https
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
